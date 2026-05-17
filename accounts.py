@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from services import telegram as tg_service
-from services.database import supabase
+import telegram as tg_service
+from database import supabase
 
 router = APIRouter()
 
