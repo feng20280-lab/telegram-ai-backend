@@ -14,7 +14,7 @@ active_clients: dict = {}
 
 
 async def create_client(session_string: str = None) -> TelegramClient:
-    session = StringSession(session_string) if session_string else StringSession()
+    session = StringSession(session_string) if session_string and session_string.strip() else StringSession()
     client = TelegramClient(session, API_ID, API_HASH)
     await client.connect()
     return client
@@ -32,10 +32,9 @@ async def get_client(account_id: str, session_string: str) -> TelegramClient:
 
 
 async def send_otp(phone: str) -> dict:
-    """Step 1: Send OTP to phone number"""
-    client = await create_client()
+    client = TelegramClient(StringSession(), API_ID, API_HASH)
+    await client.connect()
     result = await client.send_code_request(phone)
-    # Save temp client keyed by phone
     active_clients[f"temp_{phone}"] = client
     return {
         "phone_code_hash": result.phone_code_hash,
